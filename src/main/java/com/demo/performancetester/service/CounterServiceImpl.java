@@ -31,7 +31,7 @@ public class CounterServiceImpl implements CounterService {
 		Optional<Counter> counterDb = this.counterRepository.findById(counter.getId());
 
 		if (counterDb.isPresent()) {
-			log.error("count : " + counter.getCount());
+			log.info("count : " + counter.getCount());
 			Counter counterUpdate = counterDb.get();
 			counterUpdate.setCount(counter.getCount());
 			counterRepository.save(counterUpdate);
