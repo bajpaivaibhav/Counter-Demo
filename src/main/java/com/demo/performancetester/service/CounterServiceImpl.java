@@ -1,6 +1,7 @@
 package com.demo.performancetester.service;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "RegLogging")
 public class CounterServiceImpl implements CounterService {
 
-	static int count = 1;
+	public AtomicInteger atomicInteger = new AtomicInteger(0);
 
 	@Autowired
 	private CounterRepository counterRepository;
 
-	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRES_NEW, readOnly = false)
+	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, readOnly = false)
 	@Override
 	public Counter updateCounter(Counter counter) {
 		counter.setId(1);
-		counter.setCount(count++);
+		counter.setCount(atomicInteger.incrementAndGet());
 		Optional<Counter> counterDb = this.counterRepository.findById(counter.getId());
 
 		if (counterDb.isPresent()) {

@@ -17,7 +17,6 @@ public class CounterController {
 
 	@GetMapping(value = "/counter", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Counter> incrementCounter() {
-
 		Counter counter = new Counter();
 		return ResponseEntity.ok().body(counterService.updateCounter(counter));
 	}
